@@ -5,6 +5,7 @@ from game_functions import check_events
 from enemy import Enemy
 # Get group collide and group from sprite module
 from pygame.sprite import Group, groupcollide
+from bullet import Bullet
 
 def run_game():
 	# Initialize all pygame stuff 
@@ -27,12 +28,14 @@ def run_game():
 	the_player_group.add(the_player)
 	enemies = Group()
 	enemies.add(bad_guy)
+	bullets = Group()
+
 
 	# Main game loop
 	while 1:
 		screen.fill(background_color)
 		
-		check_events(the_player)
+		check_events(the_player, screen, bullets)
 
 		# Draw the player
 		for player in the_player_group:
@@ -42,7 +45,10 @@ def run_game():
 		bad_guy.update_me(the_player)
 		bad_guy.draw_me()
 
-
+		# update and draw the bullets
+		for bullet in bullets:
+			bullet.update()
+			bullet.draw_bullet()
 
 		# Check for collisions
 		hero_died = groupcollide(the_player_group, enemies, True, False)

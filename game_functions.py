@@ -1,10 +1,11 @@
 import pygame
 import sys
 from player import Player
+from bullet import Bullet
 
 
 
-def check_events(the_player):
+def check_events(the_player, screen, bullets):
 	# Escape hatch for while
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
@@ -19,6 +20,11 @@ def check_events(the_player):
 				the_player.should_move("right", True)
 			elif event.key == 276:
 				the_player.should_move("left", True)
+			elif event.key == 32:
+				# User pressed spacebar, fire!
+				for direction in range(1,5):
+					new_bullet = Bullet(screen,the_player,direction)
+					bullets.add(new_bullet)
 			 
 		elif event.type == pygame.KEYUP:
 			if event.key == 273:
