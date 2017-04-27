@@ -1,14 +1,46 @@
 # Include pygame again, different file
 import pygame
+from pygame.sprite import Sprite
 
-class Player(object):
-	def __init__(self,screen):
+
+class Player(Sprite):
+	def __init__(self,screen, start_x, start_y):
+		super(Player,self).__init__()
 		self.image = pygame.image.load('./images/Hero.png')
 		# Resize the image
-		self.image = pygame.transform.scale(self.image, (207, 250))
-		self.x = 100
-		self.y = 100
+		self.image = pygame.transform.scale(self.image, (103, 125))
+		self.x = start_x
+		self.y = start_x
+		self.speed = 10
 		self.screen = screen
+		self.should_move_up = False
+		self.should_move_down = False
+		self.should_move_left = False
+		self.should_move_right = False
+		self.rect = self.image.get_rect()
+
+
 
 	def draw_me(self):
+		if(self.should_move_up):
+			self.y -= self.speed
+		elif(self.should_move_down):
+			self.y += self.speed
+		if(self.should_move_right):
+			self.x += self.speed
+		elif(self.should_move_left):
+			self.x -= self.speed
 		self.screen.blit(self.image,[self.x,self.y])
+		self.rect.left = self.x
+		self.rect.top = self.y
+
+
+	def should_move(self, direction, true_or_false):
+		if(direction == "up"):
+			self.should_move_up = true_or_false
+		elif(direction == "down"):
+			self.should_move_down = true_or_false
+		if(direction == "left"):
+			self.should_move_left = true_or_false
+		if(direction == "right"):
+			self.should_move_right = true_or_false
